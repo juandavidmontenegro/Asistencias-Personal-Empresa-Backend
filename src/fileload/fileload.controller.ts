@@ -1,10 +1,8 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete, UploadedFile, UseInterceptors } from '@nestjs/common';
+import { Controller, Get, Post, Body, Patch, Param, Delete, UploadedFile, UseInterceptors, Query, Res } from '@nestjs/common';
+import { Response } from 'express';
 import { FileloadService } from './fileload.service';
 import { FileInterceptor } from '@nestjs/platform-express';
 import { fileFilter } from './helpers/filefilter.helper';
-
-import { AuthRoles } from 'src/auth/decorator/auth-roles.decorator';
-import { Roles } from 'src/enum/validadorRoles';
 
 @Controller('documents')
 export class FileloadController {
@@ -17,4 +15,5 @@ export class FileloadController {
   {
     return this.fileloadService.registerfile(file )
   }
+ 
 }
