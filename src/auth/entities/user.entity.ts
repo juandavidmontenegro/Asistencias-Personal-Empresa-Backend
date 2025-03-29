@@ -25,6 +25,8 @@ export class User {
     @Column({ type: 'enum', enum: Roles, default : Roles.user})
     role: Roles
 
-    @Column({ type: "timestamp", default: () => "CURRENT_TIMESTAMP(6)" })
+   
+
+    @Column({ type: 'timestamp', default: () => "CURRENT_TIMESTAMP()" })
     created_at: Date;
 }
