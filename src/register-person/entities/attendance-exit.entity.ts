@@ -12,11 +12,11 @@ export class AsistenciaPersonalExit{
     // @PrimaryGeneratedColumn()
     // cedula: number;
 
-    @CreateDateColumn({ type: 'date' , default : ()=> 'CURRENT_TIMESTAMP' })
+    @CreateDateColumn({ type: 'date' , default : ()=> 'CURRENT_TIMESTAMP()' })
     //@Column('date')
     fechaSalida: Date;
     
-    @CreateDateColumn({ type: 'time', default : ()=> 'CURRENT_TIMESTAMP' })
+    @CreateDateColumn({ type: 'time', default : ()=> 'CURRENT_TIMESTAMP()' })
     //@Column('time')
     horaSalida: Date;
 

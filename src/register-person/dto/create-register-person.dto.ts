@@ -21,6 +21,4 @@ export class CreateRegisterPersonDto {
     @IsEmail()
     correo: string;
 
-    // @IsNumber()
-    // telefono: number;
 }
