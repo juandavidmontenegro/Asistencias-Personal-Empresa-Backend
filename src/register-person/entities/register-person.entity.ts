@@ -39,10 +39,10 @@ export class RegisterPerson {
     @OneToMany(() => AsistenciaPersonalExit, (asistenciaexits) => asistenciaexits.registerPerson)
     asistenciasexits: AsistenciaPersonalExit[];
 
-    @Column({ type: "timestamp", default: () => "CURRENT_TIMESTAMP()" })
+    @Column({ type: "timestamp", default: () => "CURRENT_TIMESTAMP" })
     created_at: Date;
 
-    @Column({ type: "timestamp", default: () => "CURRENT_TIMESTAMP()", onUpdate: "CURRENT_TIMESTAMP()" })
+    @Column({ type: "timestamp", default: () => "CURRENT_TIMESTAMP", onUpdate: "CURRENT_TIMESTAMP" })
     updated_at: Date;
     exitTime: Date;
 
