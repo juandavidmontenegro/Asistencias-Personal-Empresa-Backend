@@ -9,8 +9,7 @@ export class AsistenciaPersonalExit{
      id: string;
      @Column('int' , {nullable : false})
      cedula: number;
-    // @PrimaryGeneratedColumn()
-    // cedula: number;
+   
 
     @CreateDateColumn({ type: 'date' , default : ()=> 'CURRENT_TIMESTAMP(0)' })
     fechaSalida: Date;
@@ -21,7 +20,6 @@ export class AsistenciaPersonalExit{
     @Column({ type: 'enum', enum:  Boletas, default : Boletas.termino_de_labor})
     tipo_de_salida : Boletas;
 
-    
     @ManyToOne(() => RegisterPerson, (registerPerson) => registerPerson.asistenciasexits)
     @JoinColumn({ name: 'registerPersonId' }) // Relación con RegisterPerson usando cedula
     registerPerson: RegisterPerson;

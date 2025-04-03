@@ -12,12 +12,10 @@ export class AsistenciaPersonal{
     @Column('int' , {nullable : false})
     cedula: number;
     
-    @CreateDateColumn({ type: 'date', default: () => 'CURRENT_TIMESTAMP'})
-    //@Column('date', {nullable: true})
+    @CreateDateColumn({ type: 'date', default: () => 'CURRENT_TIMESTAMP(0)'})
     fechaEntrada: Date;
 
-    @CreateDateColumn({ type :'time', default :()=> 'CURRENT_TIMESTAMP'})
-    //@Column('time' , {nullable: true})
+    @CreateDateColumn({ type :'time', default :()=> 'CURRENT_TIMESTAMP(0)'})
     horaEntrada: Date;
 
     @Column({ type: 'enum', enum: EstadoEntradasPersonal, default: EstadoEntradasPersonal.ACTIVO }) // Campo para el estado

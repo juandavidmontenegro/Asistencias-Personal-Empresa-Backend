@@ -33,8 +33,8 @@ export class RegisterPersonService {
         // Crear el nuevo registro
         const registerPerson = this.registerpersonRepository.create({
           ...createRegisterPersonDto,
-          //fechaRegistro, // Agregar fecha de registro
-          //estado: true // Estado activo por defecto
+          //fechaRegistro : new Date(), // Agregar fecha de registro
+          estado: true // Estado activo por defecto
         });
         const savedUser = await this.registerpersonRepository.save(registerPerson);
         return {
@@ -375,9 +375,9 @@ async empleados(page: number = 1, limit: number = 10, filtro?: string) {
         'empleado.cargo',
         'empleado.correo',
         'empleado.jefeInmediato',
-        'empleado.fechaRegistro'
+        'empleado.created_at'
       ])
-      .orderBy('empleado.fechaRegistro', 'DESC')
+      .orderBy('empleado.created_at', 'DESC')
       .skip(skip)
       .take(limit)
       .getMany();
