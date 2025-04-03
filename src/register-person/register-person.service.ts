@@ -1,8 +1,8 @@
-import { BadRequestException, ConflictException, Injectable } from '@nestjs/common';
+import { BadRequestException, ConflictException, Injectable, NotFoundException } from '@nestjs/common';
 import { CreateRegisterPersonDto } from './dto/create-register-person.dto';
 import { InjectRepository } from '@nestjs/typeorm';
 import { RegisterPerson } from './entities/register-person.entity';
-import { IsNull, Not, Repository } from 'typeorm';
+import { ILike, IsNull, Not, Repository } from 'typeorm';
 import { AsistenciaPersonal } from './entities/attendance.entity';
 import { CreateAsistenciaPersonDto } from './dto/create-asistencia-person.dto';
 import { AsistenciaPersonalExit } from './entities/attendance-exit.entity';
@@ -405,6 +405,55 @@ async empleados(page: number = 1, limit: number = 10, filtro?: string) {
   }
 }
 
+
+async findByCompanies() {
+  try {
+    const empresas = [
+      'industrial aceitera de casanare',
+      'agroindustrial de palma aceitera',
+      'visitantes'
+    ];
+
+    const resultados = await Promise.all(
+      empresas.map(async (empresa) => {
+        const employees = await this.registerpersonRepository.find({
+          where: {
+            empresa: ILike(`%${empresa}%`),
+            estado: true
+          },
+          select: {
+            id: true,
+            cedula: true,
+            nombrecompleto: true,
+            empresa: true,
+            cargo: true,
+            jefeInmediato: true,
+            correo: true,
+            created_at: true
+          },
+          order: {
+            nombrecompleto: 'ASC'
+          }
+        });
+
+        return {
+          empresa,
+          total: employees.length,
+        };
+      })
+    );
+
+    return {
+      message: 'Empleados encontrados exitosamente',
+      datos: resultados.map(result => ({
+        empresa: result.empresa.toUpperCase(),
+        total_empleados: result.total,
+      }))
+    };
+  } catch (error) {
+    throw new BadRequestException('Error al buscar empleados: ' + error.message);
+  }
+}
 
 
 

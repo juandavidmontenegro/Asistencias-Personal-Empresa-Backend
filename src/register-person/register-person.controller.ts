@@ -50,6 +50,12 @@ export class RegisterPersonController {
       return this.registerPersonService.empleados();
     }
 
+    @Get('empresa')
+    @AuthRoles(Roles.admin , Roles.user)
+    async findByCompany() {
+      return this.registerPersonService.findByCompanies();
+    }
+
    @Delete(':asistenciaId')
    @AuthRoles(Roles.admin , Roles.user)
    async deleteAllUserAttendances(@Param('asistenciaId') asistenciaId: string) {
