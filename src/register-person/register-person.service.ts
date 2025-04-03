@@ -194,6 +194,8 @@ export class RegisterPersonService {
     }
   }
 
+  
+
 //obtener los registros de assitecia y asistenciasexit de los empleados
 async findAll(page: number = 1, limit: number = 10) {
   try {
