@@ -8,9 +8,6 @@ import { Timestamp } from "typeorm";
 
 export class CreateAsistenciaPersonDto{
 
-    
-
-
     @IsNumber()
     cedula: number;
 

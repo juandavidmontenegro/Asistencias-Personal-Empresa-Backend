@@ -9,7 +9,8 @@ import { AuthModule } from 'src/auth/auth.module';
 import { AsistenciaPersonalExit } from './entities/attendance-exit.entity';
 
 @Module({
-  imports: [ AuthModule,  TypeOrmModule.forFeature([RegisterPerson, AsistenciaPersonal , AsistenciaPersonalExit]) , PassportModule
+  imports: [ AuthModule,  
+    TypeOrmModule.forFeature([RegisterPerson, AsistenciaPersonal , AsistenciaPersonalExit]) , PassportModule
 ],
   controllers: [RegisterPersonController],
   providers: [RegisterPersonService ],

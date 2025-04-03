@@ -12,11 +12,11 @@ export class AsistenciaPersonal{
     @Column('int' , {nullable : false})
     cedula: number;
     
-    @CreateDateColumn({ type: 'date', default: () => 'CURRENT_TIMESTAMP()'})
+    @CreateDateColumn({ type: 'date', default: () => 'CURRENT_TIMESTAMP'})
     //@Column('date', {nullable: true})
     fechaEntrada: Date;
 
-    @CreateDateColumn({ type :'time', default :()=> 'CURRENT_TIMESTAMP()'})
+    @CreateDateColumn({ type :'time', default :()=> 'CURRENT_TIMESTAMP'})
     //@Column('time' , {nullable: true})
     horaEntrada: Date;
 

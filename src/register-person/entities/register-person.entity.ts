@@ -27,9 +27,6 @@ export class RegisterPerson {
     @Column('text', { nullable: false})
     correo: string;
 
-    @Column({ type: 'timestamp', default: () => 'CURRENT_TIMESTAMP' })
-    fechaRegistro: Date;
-
     @Column({ default: true })
     estado: boolean;
 
@@ -39,10 +36,10 @@ export class RegisterPerson {
     @OneToMany(() => AsistenciaPersonalExit, (asistenciaexits) => asistenciaexits.registerPerson)
     asistenciasexits: AsistenciaPersonalExit[];
 
-    @Column({ type: "timestamp", default: () => "CURRENT_TIMESTAMP" })
+    @Column({ type: "timestamp", default: () => "CURRENT_TIMESTAMP(0)"})
     created_at: Date;
 
-    @Column({ type: "timestamp", default: () => "CURRENT_TIMESTAMP", onUpdate: "CURRENT_TIMESTAMP" })
+    @Column({ type: "timestamp", default: () => "CURRENT_TIMESTAMP(0)", onUpdate: "CURRENT_TIMESTAMP(0)" })
     updated_at: Date;
     exitTime: Date;
 

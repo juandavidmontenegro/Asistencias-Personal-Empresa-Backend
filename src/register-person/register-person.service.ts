@@ -33,8 +33,8 @@ export class RegisterPersonService {
         // Crear el nuevo registro
         const registerPerson = this.registerpersonRepository.create({
           ...createRegisterPersonDto,
-          fechaRegistro: new Date(), // Agregar fecha de registro
-          estado: true // Estado activo por defecto
+          //fechaRegistro, // Agregar fecha de registro
+          //estado: true // Estado activo por defecto
         });
         const savedUser = await this.registerpersonRepository.save(registerPerson);
         return {
