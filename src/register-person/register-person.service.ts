@@ -143,7 +143,7 @@ export class RegisterPersonService {
       }
   }
 
-  // metodo de validacion
+  // metodo de validacion de las boletas
   async findLastExit(cedula: number) {
     try {
       return await this.asistenciaPersonalExitRepository.findOne({

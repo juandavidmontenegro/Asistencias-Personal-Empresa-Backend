@@ -6,6 +6,7 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 
 
+
 @Injectable()
 export class ObservacionValidator {
   constructor(
@@ -21,9 +22,9 @@ export class ObservacionValidator {
         horaSalida: 'DESC'
       }
     });
-
     return !!(ultimaSalida && 
-      ultimaSalida.tipo_de_salida === Boletas.enfermeria && 
-      ultimaSalida.fechaboleta);
+        ultimaSalida.tipo_de_salida === Boletas.enfermeria && Boletas.dia_no_remunerado
+        && Boletas.dia_compensado && Boletas.remito_enfermeria &&
+        ultimaSalida.fechaboleta);
   }
 }
