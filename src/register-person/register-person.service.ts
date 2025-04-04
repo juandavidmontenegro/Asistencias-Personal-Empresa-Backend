@@ -8,6 +8,7 @@ import { CreateAsistenciaPersonDto } from './dto/create-asistencia-person.dto';
 import { AsistenciaPersonalExit } from './entities/attendance-exit.entity';
 import { CreateAsistenciaPersonExitDto } from './dto/create-asistencia-personexit.dto';
 import { EstadoEntradasPersonal } from 'src/enum/estadoEntrada';
+import { Boletas } from 'src/enum/validatorboletas';
 
 @Injectable()
 export class RegisterPersonService {
@@ -59,63 +60,102 @@ export class RegisterPersonService {
       }
     }
   // REGISTRO DE PERSONAL DE INGRESO
-  async attendances(createAsistenciaPersonDto: CreateAsistenciaPersonDto) {
-    try {
-      const { cedula } = createAsistenciaPersonDto;
-      // Buscar empleado y sus asistencias
-      const registerPerson = await this.registerpersonRepository.findOne({
-        where: { 
-          cedula,
-          estado: true // Validar que el empleado esté activo
-        },
-        relations: ['asistencias'],
-        select: ['id', 'cedula', 'nombrecompleto', 'asistencias'],
-      });
-      if (!registerPerson) {
-        throw new BadRequestException(
-          `El empleado no está registrado o está inactivo. Cédula: ${cedula}`
-        );
-      }
-      // Verificar si ya tiene una entrada activa
-      const asistenciaEntrada = await this.asistenciaPersonalRepository.findOne({
-        where: { 
-          registerPerson: { cedula: registerPerson.cedula }, 
-          estado: EstadoEntradasPersonal.ACTIVO 
-        },
-        relations: ['registerPerson']
-      }); 
-      if (asistenciaEntrada) {
-        throw new BadRequestException(
-          `El empleado ${registerPerson.nombrecompleto} ya registró su entrada y está dentro de la empresa`
-        );
-      }
-      // Crear registro de entrada
-      const asistenciaPersonal = this.asistenciaPersonalRepository.create({
-        cedula,
-        registerPerson,
-       // fechaEntrada: new Date(),
-        estado: EstadoEntradasPersonal.ACTIVO
-      });
-      const savedAttendance = await this.asistenciaPersonalRepository.save(asistenciaPersonal);
-      return {
-        message: 'Entrada registrada correctamente',
-        asistencia: {
-          id: savedAttendance.id,
-          cedula: savedAttendance.cedula,
-          nombrecompleto: registerPerson.nombrecompleto,
-          fechaEntrada: savedAttendance.fechaEntrada,
-          horaEntrada: savedAttendance.horaEntrada,
-          estado: savedAttendance.estado,
-        }
-      };
+    async attendances(createAsistenciaPersonDto: CreateAsistenciaPersonDto) {
+      try {
+        const { cedula, observacion } = createAsistenciaPersonDto;
   
-    } catch (error) {
-      if (error instanceof BadRequestException) {
-        throw error;
+        // Buscar empleado
+        const registerPerson = await this.registerpersonRepository.findOne({
+          where: { 
+            cedula,
+            estado: true 
+          },
+          relations: ['asistenciasexits'],
+          select: ['id', 'cedula', 'nombrecompleto', 'asistenciasexits'],
+        });
+  
+        if (!registerPerson) {
+          throw new BadRequestException(
+            `Empleado no encontrado o inactivo. Cédula: ${cedula}`
+          );
+        }
+  
+        // Verificar si ya tiene una entrada activa
+        const entradaActiva = await this.asistenciaPersonalRepository.findOne({
+          where: {
+            cedula,
+            estado: EstadoEntradasPersonal.ACTIVO
+          }
+        });
+  
+        if (entradaActiva) {
+          throw new BadRequestException(
+            `El empleado ${registerPerson.nombrecompleto} ya tiene una entrada activa`
+          );
+        }
+  
+        // Buscar última salida para validación
+        const ultimaSalida = await this.findLastExit(cedula);
+  
+        // Validar observación si viene de cita médica
+        if (ultimaSalida?.tipo_de_salida === Boletas.enfermeria && !observacion) {
+          throw new BadRequestException(
+            'Se requiere una observación al regresar de cita médica'
+          );
+        }
+  
+        // Crear registro de entrada
+        const asistenciaPersonal = this.asistenciaPersonalRepository.create({
+          cedula,
+          registerPerson,
+          estado: EstadoEntradasPersonal.ACTIVO,
+          observacion: observacion || undefined,
+        });
+  
+        const savedAttendance = await this.asistenciaPersonalRepository.save(asistenciaPersonal);
+  
+        // Retornar respuesta
+        return {
+          message: 'Entrada registrada correctamente',
+          asistencia: {
+            id: savedAttendance.id,
+            cedula: savedAttendance.cedula,
+            nombrecompleto: registerPerson.nombrecompleto,
+            fechaEntrada: savedAttendance.fechaEntrada,
+            horaEntrada: savedAttendance.horaEntrada,
+            estado: savedAttendance.estado,
+            observacion: savedAttendance.observacion,
+            ultima_salida: ultimaSalida ? {
+              tipo_salida: ultimaSalida.tipo_de_salida,
+              fecha_salida: ultimaSalida.fechaSalida,
+              fecha_boleta: ultimaSalida.fechaboleta
+            } : null
+          }
+        };
+  
+      } catch (error) {
+        if (error instanceof BadRequestException) {
+          throw error;
+        }
+        throw new BadRequestException(
+          `Error al registrar la entrada: ${error.message}`
+        );
       }
-      throw new BadRequestException(
-        `Error al registrar la entrada: ${error.message}`
-      );
+  }
+
+  // metodo de validacion
+  async findLastExit(cedula: number) {
+    try {
+      return await this.asistenciaPersonalExitRepository.findOne({
+        where: { cedula },
+        order: { 
+          fechaSalida: 'DESC',
+          horaSalida: 'DESC'
+        }
+      });
+    } catch (error) {
+      console.error('Error al buscar la última salida:', error);
+      return null;
     }
   }
 
@@ -124,13 +164,37 @@ export class RegisterPersonService {
   // salidas del personal con boleta
   async attendancesexit(createAsistenciaPersonExitDto: CreateAsistenciaPersonExitDto) {
     try {
-      const { cedula, boleta } = createAsistenciaPersonExitDto;
+      const { cedula, boleta , fechaboleta } = createAsistenciaPersonExitDto;
   
   
       // Validar que la boleta no esté vacía
       if (!boleta || boleta.trim() === '') {
         throw new BadRequestException('la boleta de salida es requerida para registrar la salida');
       }
+      // Validar fecha de boleta según el tipo
+      const boletasConFecha = [
+        Boletas.enfermeria,
+        Boletas.dia_compensado,
+        Boletas.dia_no_remunerado,
+        Boletas.remito_enfermeria
+      ];
+      // Validar fecha de boleta para tipos específicos
+    if (boletasConFecha.includes(boleta)) {
+      if (!fechaboleta) {
+        throw new BadRequestException(
+          `La fecha de la boleta es requerida para el tipo de salida: ${boleta}`
+        );
+      }
+      // Validar que la fecha no sea anterior a la fecha actual
+      const fechaActual = new Date();
+      const fechaBoleta = new Date(fechaboleta);
+      
+      if (fechaBoleta < fechaActual) {
+        throw new BadRequestException(
+          'La fecha de la boleta no puede ser anterior a la fecha actual'
+        );
+      }
+    }
   
       // Buscar empleado con sus datos necesarios
       const registerPerson = await this.registerpersonRepository.findOne({
@@ -164,9 +228,10 @@ export class RegisterPersonService {
       }
       // Crear registro de salida
       const asistenciaPersonalExit = this.asistenciaPersonalExitRepository.create({
-        tipo_de_salida: boleta,
+        tipo_de_salida: boleta, // Cambiar a nombre de propiedad correcto según la entidad
         cedula,
         registerPerson,
+        fechaboleta: boletasConFecha.includes(boleta) && fechaboleta ? new Date(fechaboleta) : undefined
       });
       // Actualizar estado de la entrada
       asistenciaEntrada.estado = EstadoEntradasPersonal.INACTIVO;
@@ -185,6 +250,7 @@ export class RegisterPersonService {
           tipo_de_salida: asistenciaPersonalExit.tipo_de_salida,
           fechaSalida: asistenciaPersonalExit.fechaSalida,
           horaSalida: asistenciaPersonalExit.horaSalida,
+          fechaboleta : asistenciaPersonalExit.fechaboleta
       
         }
       };

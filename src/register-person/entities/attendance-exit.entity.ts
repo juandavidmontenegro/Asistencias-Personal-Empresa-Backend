@@ -20,7 +20,7 @@ export class AsistenciaPersonalExit{
     @Column({ type: 'enum', enum:  Boletas, default : Boletas.termino_de_labor})
     tipo_de_salida : Boletas;
 
-    @Column('date' , { nullable: true})
+    @Column('date', { nullable: true })
     fechaboleta:  Date ; 
 
     @ManyToOne(() => RegisterPerson, (registerPerson) => registerPerson.asistenciasexits)

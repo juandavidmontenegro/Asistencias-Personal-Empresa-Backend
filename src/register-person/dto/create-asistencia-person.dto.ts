@@ -1,9 +1,6 @@
-
-import { Type } from "class-transformer";
-import {  IsDate, IsDateString, IsEnum, IsNotEmpty, IsNumber, IsOptional, IsString } from "class-validator";
-
+import {   IsEnum, IsNumber, IsOptional, IsString, Validate } from "class-validator";
 import { EstadoEntradasPersonal } from "src/enum/estadoEntrada";
-import { Timestamp } from "typeorm";
+import { RequireObservacionIfBoleta } from "../decorator/validar-boleta-entrada.decorator";
 
 
 export class CreateAsistenciaPersonDto{
@@ -14,12 +11,11 @@ export class CreateAsistenciaPersonDto{
     @IsOptional()
     @IsEnum(EstadoEntradasPersonal)
     estado?: EstadoEntradasPersonal;
-
+    
     @IsOptional()
     @IsString()
-    observacion? : string;
-    
-
+    @RequireObservacionIfBoleta() // Usar un validador personalizado
+    observacion?: string;
     
 
 }
