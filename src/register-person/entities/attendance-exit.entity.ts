@@ -20,6 +20,9 @@ export class AsistenciaPersonalExit{
     @Column({ type: 'enum', enum:  Boletas, default : Boletas.termino_de_labor})
     tipo_de_salida : Boletas;
 
+    @Column({ default: true })
+    fechaBoleta? :  string ; 
+
     @ManyToOne(() => RegisterPerson, (registerPerson) => registerPerson.asistenciasexits)
     @JoinColumn({ name: 'registerPersonId' }) // Relación con RegisterPerson usando cedula
     registerPerson: RegisterPerson;

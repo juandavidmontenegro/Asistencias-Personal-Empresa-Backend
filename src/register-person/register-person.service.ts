@@ -118,6 +118,9 @@ export class RegisterPersonService {
       );
     }
   }
+
+
+  
   // salidas del personal con boleta
   async attendancesexit(createAsistenciaPersonExitDto: CreateAsistenciaPersonExitDto) {
     try {
