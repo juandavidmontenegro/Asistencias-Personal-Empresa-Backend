@@ -1,6 +1,6 @@
 
 import { Transform, Type } from "class-transformer";
-import { IsEnum, IsNotEmpty, IsNumber, IsOptional, IsString } from "class-validator";
+import { IsDate, IsEnum, IsNotEmpty, IsNumber, IsOptional, IsString } from "class-validator";
 import { time } from "console";
 import { Boletas } from "src/enum/validatorboletas";
 
@@ -16,6 +16,8 @@ export class CreateAsistenciaPersonExitDto{
     @IsEnum(Boletas)
     boleta: Boletas;
 
+    @IsDate()
+    fechaboleta? : Date;
 
     
 

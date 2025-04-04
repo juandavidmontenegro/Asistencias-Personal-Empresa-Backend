@@ -18,6 +18,9 @@ export class AsistenciaPersonal{
     @CreateDateColumn({ type :'time', default :()=> 'CURRENT_TIMESTAMP(0)'})
     horaEntrada: Date;
 
+    @Column('text', { nullable: true})
+    observacion : string;
+
     @Column({ type: 'enum', enum: EstadoEntradasPersonal, default: EstadoEntradasPersonal.ACTIVO }) // Campo para el estado
     estado: EstadoEntradasPersonal; // Este es el campo para el estado de la entrada/salida
 

@@ -14,6 +14,10 @@ export class CreateAsistenciaPersonDto{
     @IsOptional()
     @IsEnum(EstadoEntradasPersonal)
     estado?: EstadoEntradasPersonal;
+
+    @IsOptional()
+    @IsString()
+    observacion? : string;
     
 
     
