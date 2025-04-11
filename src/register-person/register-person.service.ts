@@ -282,12 +282,14 @@ async findAll(page: number = 1, limit: number = 10) {
         asistencias: {
           fechaEntrada: true,
           horaEntrada: true,
-          estado: true
+          estado: true,
+          observacion : true
         },
         asistenciasexits: {
           fechaSalida: true,
           horaSalida: true,
-          tipo_de_salida: true
+          tipo_de_salida: true,
+          fechaboleta : true
         }
       }
     });

@@ -21,24 +21,24 @@ export class RegisterPersonController {
 
   @Post('persona')
   @AuthRoles(Roles.admin)
-  create(@Body() createRegisterPersonDto: CreateRegisterPersonDto ,@GetUser() person: RegisterPerson) {
+  async create(@Body() createRegisterPersonDto: CreateRegisterPersonDto ,@GetUser() person: RegisterPerson) {
     return this.registerPersonService.create(createRegisterPersonDto);
   }
 
   @Post('ingreso')
   @AuthRoles(Roles.admin, Roles.user)
-  Attendances( @Body() createAsistenciaPersonDto: CreateAsistenciaPersonDto , @GetUser() person : RegisterPerson) {
+  async Attendances( @Body() createAsistenciaPersonDto: CreateAsistenciaPersonDto , @GetUser() person : RegisterPerson) {
     return this.registerPersonService.attendances(   createAsistenciaPersonDto);
   } 
    @Post('salida')
    @AuthRoles(Roles.admin, Roles.user)
-   Attendancesexit( @Body() createAsistenciaPersonExitDto: CreateAsistenciaPersonExitDto , @GetUser() person : RegisterPerson) {
+   async Attendancesexit( @Body() createAsistenciaPersonExitDto: CreateAsistenciaPersonExitDto , @GetUser() person : RegisterPerson) {
      return this.registerPersonService.attendancesexit( createAsistenciaPersonExitDto);
    }
 
-   @Get()
-   @AuthRoles(Roles.admin , Roles.user)
-   findAll( 
+    @Get()
+    @AuthRoles(Roles.admin , Roles.user)
+    async findAll( 
     @Query('page', new DefaultValuePipe(1), ParseIntPipe) page: number,
     @Query('limit', new DefaultValuePipe(5), ParseIntPipe) limit: number) {
      return this.registerPersonService.findAll( page, limit);
@@ -46,7 +46,7 @@ export class RegisterPersonController {
 
    @Get('empleados')
     @AuthRoles(Roles.admin , Roles.user)
-    empleados() {
+    async empleados() {
       return this.registerPersonService.empleados();
     }
 
