@@ -9,8 +9,8 @@ export class RegisterPerson {
     @PrimaryGeneratedColumn('uuid')
     id: string
 
-    @Column('int')
-    cedula: number;
+    @Column('text' , {nullable : false})
+    cedula: string;
 
     @Column('text',{ nullable: false})
     nombrecompleto : string;
