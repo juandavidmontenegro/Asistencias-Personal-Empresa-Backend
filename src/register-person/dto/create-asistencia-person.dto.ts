@@ -1,4 +1,4 @@
-import {   IsEnum, IsNumber, IsOptional, IsString, Validate } from "class-validator";
+import {   IsEnum, IsNotEmpty, IsNumber, IsOptional, IsString, Validate } from "class-validator";
 import { EstadoEntradasPersonal } from "src/enum/estadoEntrada";
 import { RequireObservacionIfBoleta } from "../decorator/validar-boleta-entrada.decorator";
 
@@ -6,6 +6,7 @@ import { RequireObservacionIfBoleta } from "../decorator/validar-boleta-entrada.
 export class CreateAsistenciaPersonDto{
 
     @IsString()
+    @IsNotEmpty()
     cedula: string;
 
     @IsOptional()

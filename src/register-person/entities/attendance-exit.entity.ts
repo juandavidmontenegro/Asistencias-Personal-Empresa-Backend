@@ -7,9 +7,9 @@ export class AsistenciaPersonalExit{
 
      @PrimaryGeneratedColumn('uuid')
      id: string;
+
      @Column('text' , {nullable : false})
      cedula: string;
-   
 
     @CreateDateColumn({ type: 'date' , default : ()=> 'CURRENT_TIMESTAMP(0)' })
     fechaSalida: Date;

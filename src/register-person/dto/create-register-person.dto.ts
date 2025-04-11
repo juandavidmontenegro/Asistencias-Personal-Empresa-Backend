@@ -1,10 +1,11 @@
-import { IsEmail, IsNumber, IsString } from "class-validator";
+import { IsEmail, IsNotEmpty, IsNumber, IsString } from "class-validator";
 
 export class CreateRegisterPersonDto {
 
     
     @IsString()
-    cedula: String;
+    @IsNotEmpty()
+    cedula: string;
 
     @IsString()
     nombrecompleto: string;

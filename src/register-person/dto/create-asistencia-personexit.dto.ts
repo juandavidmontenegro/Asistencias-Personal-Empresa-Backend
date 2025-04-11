@@ -11,6 +11,7 @@ export class CreateAsistenciaPersonExitDto{
 
 
     @IsString()
+    @IsNotEmpty()
     cedula: string;
   
     @IsString()
