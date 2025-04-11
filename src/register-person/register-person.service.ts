@@ -144,7 +144,7 @@ export class RegisterPersonService {
   }
 
   // metodo de validacion de las boletas
-  async findLastExit(cedula: number) {
+  async findLastExit(cedula: string) {
     try {
       return await this.asistenciaPersonalExitRepository.findOne({
         where: { cedula },

@@ -1,5 +1,4 @@
 import { Injectable } from '@nestjs/common';
-import { RegisterPersonService } from './register-person.service';
 import { Boletas } from 'src/enum/validatorboletas';
 import { AsistenciaPersonalExit } from './entities/attendance-exit.entity';
 import { InjectRepository } from '@nestjs/typeorm';
@@ -14,7 +13,7 @@ export class ObservacionValidator {
     private readonly exitRepository: Repository<AsistenciaPersonalExit>
   ) {}
 
-  async validateObservacion(cedula: number): Promise<boolean> {
+  async validateObservacion(cedula: string): Promise<boolean> {
     const ultimaSalida = await this.exitRepository.findOne({
       where: { cedula },
       order: { 
