@@ -1,8 +1,8 @@
-import {  IsNumber } from "class-validator";
+import {  IsNumber, IsString } from "class-validator";
 
 export class FilterPersonDocument{
 
-    @IsNumber()
-    cedula : number
+    @IsString()
+    cedula : string;
 
 }

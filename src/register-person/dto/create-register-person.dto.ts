@@ -3,8 +3,8 @@ import { IsEmail, IsNumber, IsString } from "class-validator";
 export class CreateRegisterPersonDto {
 
     
-    @IsNumber()
-    cedula: number;
+    @IsString()
+    cedula: String;
 
     @IsString()
     nombrecompleto: string;

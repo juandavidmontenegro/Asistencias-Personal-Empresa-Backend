@@ -5,8 +5,8 @@ import { RequireObservacionIfBoleta } from "../decorator/validar-boleta-entrada.
 
 export class CreateAsistenciaPersonDto{
 
-    @IsNumber()
-    cedula: number;
+    @IsString()
+    cedula: string;
 
     @IsOptional()
     @IsEnum(EstadoEntradasPersonal)

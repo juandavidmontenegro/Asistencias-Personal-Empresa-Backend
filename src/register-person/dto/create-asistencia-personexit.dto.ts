@@ -10,8 +10,8 @@ import { RequireFechaBoleta } from "../decorator/validar-boleta-citamedica.decor
 export class CreateAsistenciaPersonExitDto{
 
 
-    @IsNumber()
-    cedula: number;
+    @IsString()
+    cedula: string;
   
     @IsString()
     @IsEnum(Boletas)
