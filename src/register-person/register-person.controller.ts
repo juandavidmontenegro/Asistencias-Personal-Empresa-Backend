@@ -14,14 +14,16 @@ import { FilterPersonDocument } from './dto/filter-documts.tdo';
 
 
 
-@Controller('register')
-@AuthRoles()
+@Controller('register-person')
+// @AuthRoles()
 export class RegisterPersonController {
   constructor(private readonly registerPersonService: RegisterPersonService) {}
 
-  @Post('persona')
-  @AuthRoles(Roles.admin)
-  async create(@Body() createRegisterPersonDto: CreateRegisterPersonDto ,@GetUser() person: RegisterPerson) {
+  @Post('register')
+  // @AuthRoles(Roles.admin)
+  async create(@Body() createRegisterPersonDto: CreateRegisterPersonDto 
+  // ,@GetUser() person: RegisterPerson
+) {
     return this.registerPersonService.create(createRegisterPersonDto);
   }
 
