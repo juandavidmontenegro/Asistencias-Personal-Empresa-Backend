@@ -8,11 +8,6 @@ import { AuthService } from './auth/auth.service';
 import { RegisterPersonModule } from './register-person/register-person.module';
 import { FileloadModule } from './fileload/fileload.module';
 import { FilterdateModule } from './filterdate/filterdate.module';
-
-
-
-
-
 @Module({
   imports: [
     ConfigModule.forRoot({
@@ -23,11 +18,11 @@ import { FilterdateModule } from './filterdate/filterdate.module';
 useFactory: (configService: ConfigService) => ({
         type: 'postgres',
         //url: configService.get('DATABASE_URL'),
-        host: configService.get('DATABASE_HOST'),
-        port: +configService.get('DATABASE_PORT'),
-        username: configService.get('DATABASE_USERNAME'),
-        password: configService.get('DATABASE_PASSWORD'),
-        database: configService.get('DATABASE_NAME'),
+        host: configService.get('POSTGRES_HOST'),
+        port: +configService.get('POSTGRES_PORT'),
+        username: configService.get('POSTGRES_USER'),
+        password: configService.get('POSTGRES_PASSWORD'),
+        database: configService.get('POSTGRES_DB'),
         autoLoadEntities: true,
         synchronize: true,
       }),
