@@ -1,11 +1,9 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete, UseGuards } from '@nestjs/common';
+import { Body, Controller, Get, Post, UseGuards } from '@nestjs/common';
 import { AuthService } from './auth.service';
 import { CreateAuthDto } from './dto/create-auth.dto';
-import { UpdateAuthDto } from './dto/update-auth.dto';
 import { CreateAuthLoginDto } from './dto/create-auth-login';
 import { AuthGuard } from '@nestjs/passport';
 import { GetUser } from 'src/auth/decorator/getUser.decorator';
-import { request } from 'http';
 import { User } from './entities/user.entity';
 
 @Controller('auth')
@@ -21,10 +19,10 @@ export class AuthController {
     return this.authService.login(createAuthLoginDto);
   }
   // obtener el usuario desde el token solo token
-  @Get('check-status')
-  @UseGuards(AuthGuard('jwt'))
-  checkAuthStatus(@GetUser() user : User){
-    return this.authService.checkAuthStatus(user);
-  }
+  // @Get('check-status')
+  // @UseGuards(AuthGuard('jwt'))
+  // checkAuthStatus(@GetUser() user : User){
+  //   return this.authService.checkAuthStatus(user);
+  // }
   
 }

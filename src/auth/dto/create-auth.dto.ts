@@ -6,6 +6,7 @@ export class CreateAuthDto {
     @Transform(({ value}) => value.trim())// valida los espacios en blanco
     @IsString()
     nombre: string ;
+
     @Transform(({ value}) => value.trim())// valida los espacios en blanco
     @IsString()
     apellido: string ;
@@ -23,9 +24,6 @@ export class CreateAuthDto {
     @IsEnum(Roles)
     role?: Roles;
 
-    // @Transform(({ value}) => value.trim())// valida los espacios en blanco
-    // @IsString()
-    // RefreshToken: string;
 
 
 }

@@ -18,17 +18,22 @@ constructor(@InjectRepository(User) private readonly userRepository : Repository
 // crear usuario desde el servicio de usuarios
   async create(createAuthDto: CreateAuthDto) {        
     try {
+      const {email} = createAuthDto
+      const usuario = await this.userRepository.findOneBy({email})
+      if(usuario){
+        throw new BadRequestException(`El usuario con el email ${email} ya existe en el sistema`)
+      }
       const { password , ...userdata} = createAuthDto
       const user = this.userRepository.create({
         ...userdata, password : bcrypt.hashSync(password, 10)
       }) 
       await this.userRepository.save(user)
-        const {password:_, id:__, ...rest} = user
+        const {password:_, id:__, created_at, ...rest} = user
       return {
         message : 'Usuario creado correctamente',
         user : {
          ...rest,
-         token : this.jwtToken({id : user.id , email: user.email}) // generamos el token
+         token : this.jwtToken({id : user.id , email: user.email , role: user.role}) // generamos el token
         }
       }
     } catch (error) {
@@ -47,12 +52,12 @@ constructor(@InjectRepository(User) private readonly userRepository : Repository
       // si no existe el usuario
       if(!bcrypt.compareSync(password, user.password))
          {throw new UnauthorizedException(`contraseña incorrecta`)} // si la contraseña es incorrecta
-      const {password:_, id:__, ...rest} = user
+      const {password:_, id:__, created_at,  ...rest} = user
       return {
-        message : 'Usuario logeado correctamente',
+        message : 'Usuario exitoso',
         user : {
           ...rest,
-            token : this.jwtToken({id : user.id , email: user.email}) // generamos el token
+            token : this.jwtToken({id : user.id , email: user.email, role: user.role }) // generamos el token
         }
       }
       
@@ -68,17 +73,17 @@ constructor(@InjectRepository(User) private readonly userRepository : Repository
   }
    
   // obenemos toda la infromacion copn el solo token 
-  async checkAuthStatus(user : User){
-    const {password:_, id:__, created_at, ...rest} = user
-    return {
-      user : {
-        ...rest,
-      token : this.jwtToken({id : user.id, email: user.email}) // generamos el token
+  // async checkAuthStatus(user : User){
+  //   const {password:_, id:__, created_at, ...rest} = user
+  //   return {
+  //     user : {
+  //       ...rest,
+  //     token : this.jwtToken({id : user.id, email: user.email, role: user.role }) // generamos el token
 
-      }
+  //     }
       
-    }
-  }
+  //   }
+  // }
   
 
 
