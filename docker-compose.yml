@@ -3,7 +3,7 @@ version: '3.8'
 services:
   postgres:
     image: postgres:16-alpine
-    container_name: postgres
+    container_name: postgresdb
     restart: always
     environment:
       POSTGRES_USER: '${POSTGRES_USER}'
@@ -17,7 +17,7 @@ services:
 
   pgadmin:
     image: dpage/pgadmin4:latest
-    container_name: pgadmin
+    container_name: pgadmindb
     restart: always
     environment:
       PGADMIN_DEFAULT_EMAIL: admin@admin.com
