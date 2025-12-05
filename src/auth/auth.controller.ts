@@ -19,10 +19,10 @@ export class AuthController {
     return this.authService.login(createAuthLoginDto);
   }
   // obtener el usuario desde el token solo token
-  // @Get('check-status')
-  // @UseGuards(AuthGuard('jwt'))
-  // checkAuthStatus(@GetUser() user : User){
-  //   return this.authService.checkAuthStatus(user);
-  // }
+  @Get('check-status')
+  @UseGuards(AuthGuard('jwt'))
+  checkAuthStatus(@GetUser() user : User){
+    return this.authService.checkAuthStatus(user);
+  }
   
 }

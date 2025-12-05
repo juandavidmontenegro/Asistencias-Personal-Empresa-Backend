@@ -73,17 +73,17 @@ constructor(@InjectRepository(User) private readonly userRepository : Repository
   }
    
   // obenemos toda la infromacion copn el solo token 
-  // async checkAuthStatus(user : User){
-  //   const {password:_, id:__, created_at, ...rest} = user
-  //   return {
-  //     user : {
-  //       ...rest,
-  //     token : this.jwtToken({id : user.id, email: user.email, role: user.role }) // generamos el token
+  async checkAuthStatus(user : User){
+    const {password:_, id:__, created_at, ...rest} = user
+    return {
+      user : {
+        ...rest,
+      token : this.jwtToken({id : user.id, email: user.email, role: user.role }) // generamos el token
 
-  //     }
+      }
       
-  //   }
-  // }
+    }
+  }
   
 
 

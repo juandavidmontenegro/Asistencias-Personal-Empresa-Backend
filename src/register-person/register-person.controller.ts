@@ -38,7 +38,7 @@ export class RegisterPersonController {
      return this.registerPersonService.attendancesexit( createAsistenciaPersonExitDto);
    }
 
-    @Get()
+    @Get('tablas')
     @AuthRoles(Roles.admin , Roles.user)
     async findAll( 
     @Query('page', new DefaultValuePipe(1), ParseIntPipe) page: number,
