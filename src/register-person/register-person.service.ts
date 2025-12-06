@@ -476,6 +476,8 @@ async empleados(page: number = 1, limit: number = 10, filtro?: string) {
   }
 }
 
+//eliminar un empleado del registro de empleados
+async findbyEmpleados( ){}
 
 async findByCompanies() {
   try {

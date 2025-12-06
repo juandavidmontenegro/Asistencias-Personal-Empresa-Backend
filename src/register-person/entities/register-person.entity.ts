@@ -1,5 +1,5 @@
 
-import { Column, Entity, ManyToOne, OneToMany, PrimaryGeneratedColumn } from "typeorm";
+import { Column, CreateDateColumn, Entity, ManyToOne, OneToMany, PrimaryGeneratedColumn, UpdateDateColumn } from "typeorm";
 import { AsistenciaPersonal } from "./attendance.entity";
 import { AsistenciaPersonalExit } from "./attendance-exit.entity";
 
@@ -30,18 +30,21 @@ export class RegisterPerson {
     @Column({ default: true })
     estado: boolean;
 
+    
+    @CreateDateColumn({ type: "timestamp", default: () => "CURRENT_TIMESTAMP(0)"})
+    created_at: Date;
+    
+    @UpdateDateColumn({ type: "timestamp", default: () => "CURRENT_TIMESTAMP(0)", onUpdate: "CURRENT_TIMESTAMP(0)" })
+    updated_at: Date;
+    
+    @Column({ type: "timestamp", nullable: true })
+    exitTime: Date;
+    
     @OneToMany(() => AsistenciaPersonal, (asistencia) => asistencia.registerPerson)
     asistencias: AsistenciaPersonal[];
 
     @OneToMany(() => AsistenciaPersonalExit, (asistenciaexits) => asistenciaexits.registerPerson)
     asistenciasexits: AsistenciaPersonalExit[];
-
-    @Column({ type: "timestamp", default: () => "CURRENT_TIMESTAMP(0)"})
-    created_at: Date;
-
-    @Column({ type: "timestamp", default: () => "CURRENT_TIMESTAMP(0)", onUpdate: "CURRENT_TIMESTAMP(0)" })
-    updated_at: Date;
-    exitTime: Date;
 
 
 }

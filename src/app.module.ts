@@ -6,8 +6,6 @@ import {  TypeOrmModule } from '@nestjs/typeorm';
 import { AuthModule } from './auth/auth.module';
 import { AuthService } from './auth/auth.service';
 import { RegisterPersonModule } from './register-person/register-person.module';
-import { FileloadModule } from './fileload/fileload.module';
-import { FilterdateModule } from './filterdate/filterdate.module';
 @Module({
   imports: [
     ConfigModule.forRoot({
@@ -28,7 +26,7 @@ useFactory: (configService: ConfigService) => ({
       }),
       inject: [ConfigService],
     }),
-    AuthModule, RegisterPersonModule, FileloadModule, FilterdateModule,
+    AuthModule, RegisterPersonModule,
   ],
   controllers: [AppController],
   providers: [AppService , AuthService , ],
