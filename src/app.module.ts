@@ -24,9 +24,9 @@ useFactory: (configService: ConfigService) => ({
         autoLoadEntities: true,
         synchronize: true,
         // para desplegarlo en la nube RENDER 
-        ssl :  process.env.POSTGRES_SSL ==='true',
+        ssl :  process.env.POSTGRES_SSL ==="true",
         extra : {
-          ssl : process.env.POSTGRES_SSL ==='true' ? { rejectUnauthorized : false } : null
+          ssl : process.env.POSTGRES_SSL ==="true" ? { rejectUnauthorized : false } : null
         }
 
       }),
