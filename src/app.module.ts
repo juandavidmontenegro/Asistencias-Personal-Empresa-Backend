@@ -6,6 +6,7 @@ import {  TypeOrmModule } from '@nestjs/typeorm';
 import { AuthModule } from './auth/auth.module';
 import { AuthService } from './auth/auth.service';
 import { RegisterPersonModule } from './register-person/register-person.module';
+
 @Module({
   imports: [
     ConfigModule.forRoot({
@@ -13,30 +14,36 @@ import { RegisterPersonModule } from './register-person/register-person.module';
     }),
     TypeOrmModule.forRootAsync({
       imports: [ConfigModule],
-useFactory: (configService: ConfigService) => ({
-        type: 'postgres',
-        //url: configService.get('DATABASE_URL'),
-        host: configService.get('POSTGRES_HOST'),
-        port: +configService.get('POSTGRES_PORT'),
-        username: configService.get('POSTGRES_USER'),
-        password: configService.get('POSTGRES_PASSWORD'),
-        database: configService.get('POSTGRES_DB'),
-        autoLoadEntities: true,
-        synchronize: true,
-        // para desplegarlo en la nube RENDER 
-        ssl :  process.env.POSTGRES_SSL ==='true',
-        extra : {
-          ssl : process.env.POSTGRES_SSL ==='true' ? { rejectUnauthorized : false } : null
-        }
-
-      }),
+      useFactory: (configService: ConfigService) => {
+        const isProduction = process.env.NODE_ENV === 'production';
+        const sslEnabled = process.env.POSTGRES_SSL === 'true' || isProduction;
+        
+        return {
+          type: 'postgres',
+          host: configService.get('POSTGRES_HOST'),
+          port: +configService.get('POSTGRES_PORT'),
+          username: configService.get('POSTGRES_USER'),
+          password: configService.get('POSTGRES_PASSWORD'),
+          database: configService.get('POSTGRES_DB'),
+          autoLoadEntities: true,
+          synchronize: true,
+          // Configuración SSL mejorada para Render
+          ssl: sslEnabled,
+          extra: sslEnabled ? {
+            ssl: {
+              rejectUnauthorized: false,
+              sslmode: 'require'
+            }
+          } : undefined
+        };
+      },
       inject: [ConfigService],
     }),
-    AuthModule, RegisterPersonModule,
+    AuthModule, 
+    RegisterPersonModule,
   ],
   controllers: [AppController],
-  providers: [AppService , AuthService , ],
-  exports : [AuthModule  ]
-  
+  providers: [AppService, AuthService],
+  exports: [AuthModule]
 })
-export class AppModule{ }
+export class AppModule {}
