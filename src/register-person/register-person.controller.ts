@@ -20,9 +20,9 @@ export class RegisterPersonController {
   constructor(private readonly registerPersonService: RegisterPersonService) {}
 
   @Post('register')
-  // @AuthRoles(Roles.admin)
+  @AuthRoles(Roles.admin)
   async create(@Body() createRegisterPersonDto: CreateRegisterPersonDto 
-  // ,@GetUser() person: RegisterPerson
+   ,@GetUser() person: RegisterPerson
 ) {
     return this.registerPersonService.create(createRegisterPersonDto);
   }
@@ -40,7 +40,7 @@ export class RegisterPersonController {
 
 
     @Get('tablas-asistencias')
-    // @AuthRoles(Roles.admin , Roles.user)
+    @AuthRoles(Roles.admin , Roles.user)
     async findAll( 
     @Query('page', new DefaultValuePipe(1), ParseIntPipe) page: number,
     @Query('limit', new DefaultValuePipe(5), ParseIntPipe) limit: number) {
@@ -49,7 +49,7 @@ export class RegisterPersonController {
 
    
    @Get('tablas-empleados')
-    // @AuthRoles(Roles.admin , Roles.user)
+    @AuthRoles(Roles.admin , Roles.user)
     async empleados() {
       return this.registerPersonService.empleados();
     }

@@ -23,6 +23,12 @@ useFactory: (configService: ConfigService) => ({
         database: configService.get('POSTGRES_DB'),
         autoLoadEntities: true,
         synchronize: true,
+        // para desplegarlo en la nube RENDER 
+        ssl :  process.env.POSTGRES_SSL ==='true',
+        extra : {
+          ssl : process.env.POSTGRES_SSL ==='true' ? { rejectUnauthorized : false } : null
+        }
+
       }),
       inject: [ConfigService],
     }),
