@@ -38,16 +38,18 @@ export class RegisterPersonController {
      return this.registerPersonService.attendancesexit( createAsistenciaPersonExitDto);
    }
 
-    @Get('tablas')
-    @AuthRoles(Roles.admin , Roles.user)
+
+    @Get('tablas-asistencias')
+    // @AuthRoles(Roles.admin , Roles.user)
     async findAll( 
     @Query('page', new DefaultValuePipe(1), ParseIntPipe) page: number,
     @Query('limit', new DefaultValuePipe(5), ParseIntPipe) limit: number) {
      return this.registerPersonService.findAll( page, limit);
    }
 
-   @Get('empleados')
-    @AuthRoles(Roles.admin , Roles.user)
+   
+   @Get('tablas-empleados')
+    // @AuthRoles(Roles.admin , Roles.user)
     async empleados() {
       return this.registerPersonService.empleados();
     }
